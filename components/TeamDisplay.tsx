@@ -3,14 +3,13 @@
 import { GameData } from "@/types/game";
 import { AlertCircle } from "lucide-react";
 import PlayerCard from "./PlayerCard";
-import TeamStats from "./TeamStats";
 
 interface TeamDisplayProps {
   gameData: GameData;
 }
 
 export default function TeamDisplay({ gameData }: TeamDisplayProps) {
-  const { observedPlayer, teamMembers, teamInfo } = gameData;
+  const { observedPlayer, teamMembers } = gameData;
 
   if (!observedPlayer) {
     return (
@@ -28,30 +27,26 @@ export default function TeamDisplay({ gameData }: TeamDisplayProps) {
     );
   }
 
-  // Sort team members: alive first, then by kills
   const sortedMembers = [...teamMembers].sort((a, b) => {
     if (a.isAlive !== b.isAlive) return b.isAlive ? 1 : -1;
     return b.killNum - a.killNum;
   });
 
-  return (
-    <div className="flex h-full flex-col gap-6 p-6">
-      {/* Team Stats Header */}
-      <TeamStats teamInfo={teamInfo} teamName={observedPlayer.teamName} />
+  const playerSlots = Array.from(
+    { length: 4 },
+    (_, index) => sortedMembers[index] || null,
+  );
 
-      {/* Players Grid */}
-      <div className="flex-1">
-        <h3 className="mb-4 text-xl font-bold text-white">Team Members</h3>
-        <div className="grid grid-cols-4">
-          {sortedMembers.map((player) => (
-            <PlayerCard
-              key={player.playerId}
-              player={player}
-              isObserved={player.playerId === observedPlayer.playerId}
-            />
-          ))}
-        </div>
-      </div>
+  return (
+    <div className="flex h-full w-full">
+      {playerSlots.map((player, index) => (
+        <PlayerCard
+          key={player?.playerId || `empty-${index}`}
+          player={player}
+          isObserved={player?.playerId === observedPlayer.playerId}
+          index={index}
+        />
+      ))}
     </div>
   );
 }
