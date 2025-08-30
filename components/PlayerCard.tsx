@@ -16,35 +16,21 @@ export default function PlayerCard({
   isObserved,
   index,
 }: PlayerCardProps) {
-  const isAlive = player
-    ? player.liveState === 0 || player.liveState === 2
-    : false;
-  const isKnocked = player ? player.liveState === 1 : false;
-  const isDead = player ? player.liveState === 3 || player.bHasDied : false;
+  const isKnocked = player ? player.liveState === 4 : false;
+  const isDead = player ? player.liveState === 5 || player.bHasDied : false;
 
   return (
     <div className="h-full w-1/4">
       <AnimatePresence>
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: index * 0.5 }}
-          className="relative flex h-full w-full flex-col items-start justify-end bg-gradient-to-t from-black to-transparent p-16"
-          style={{ transitionDelay: `${(index + 1) * 150}ms` }}
-        >
+        <motion.div className="relative flex h-full w-full flex-col items-start justify-end gap-8 bg-gradient-to-t from-black to-transparent p-16">
           {player && (
-            <div className="absolute top-6 left-6 z-30">
+            <div className="absolute top-10 left-10 z-30 space-x-4">
               <p className="text-4xl font-bold text-[#CFE356]">
                 {player.playerName}
               </p>
               {isObserved && (
                 <div className="mt-1 inline-block rounded bg-yellow-500 px-2 py-1 text-xs font-bold text-black">
                   OBSERVED
-                </div>
-              )}
-              {isDead && (
-                <div className="mt-1 inline-block rounded bg-neutral-500 px-2 py-1 text-xs font-bold text-white">
-                  ELIMINATED
                 </div>
               )}
               {isKnocked && (
@@ -72,10 +58,10 @@ export default function PlayerCard({
             <p className="text-lg">HEALTH</p>
           </div>
 
-          <div className="z-30 text-[#CFE356]">
+          {/* <div className="z-30 text-[#CFE356]">
             <p className="text-5xl font-bold">{player?.knockouts || 0}</p>
             <p className="text-lg">KNOCKS</p>
-          </div>
+          </div> */}
 
           <AnimatePresence>
             <motion.div
@@ -104,7 +90,7 @@ export default function PlayerCard({
           </AnimatePresence>
 
           {player && (
-            <div className="absolute top-10 right-6 z-30">
+            <div className="absolute top-14 right-10 z-30">
               <div className="flex items-center gap-2">
                 <div
                   className={`h-3 w-3 rounded-full ${
