@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 
-const GAME_SERVER_URL =
-  process.env.NEXT_PUBLIC_GAME_SERVER_URL || "http://localhost:10086";
+const GAME_SERVER_URL="http://localhost:10086";
 
 export async function GET() {
   const controller = new AbortController();
