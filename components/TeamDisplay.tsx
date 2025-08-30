@@ -1,3 +1,4 @@
+// components/TeamDisplay.tsx
 "use client";
 
 import { GameData } from "@/types/game";
@@ -27,11 +28,16 @@ export default function TeamDisplay({ gameData }: TeamDisplayProps) {
     );
   }
 
+  // Sort team members: alive players first, then by kills
   const sortedMembers = [...teamMembers].sort((a, b) => {
-    if (a.isAlive !== b.isAlive) return b.isAlive ? 1 : -1;
+    const aAlive = a.liveState === 0 || a.liveState === 2;
+    const bAlive = b.liveState === 0 || b.liveState === 2;
+
+    if (aAlive !== bAlive) return bAlive ? 1 : -1;
     return b.killNum - a.killNum;
   });
 
+  // Create exactly 4 player slots
   const playerSlots = Array.from(
     { length: 4 },
     (_, index) => sortedMembers[index] || null,
@@ -41,9 +47,9 @@ export default function TeamDisplay({ gameData }: TeamDisplayProps) {
     <div className="flex h-full w-full">
       {playerSlots.map((player, index) => (
         <PlayerCard
-          key={player?.playerId || `empty-${index}`}
+          key={player?.uId || `empty-${index}`}
           player={player}
-          isObserved={player?.playerId === observedPlayer.playerId}
+          isObserved={player?.uId === observedPlayer.uId}
           index={index}
         />
       ))}

@@ -1,3 +1,4 @@
+// components/PlayerCard.tsx
 "use client";
 
 import { Player } from "@/types/game";
@@ -15,6 +16,12 @@ export default function PlayerCard({
   isObserved,
   index,
 }: PlayerCardProps) {
+  const isAlive = player
+    ? player.liveState === 0 || player.liveState === 2
+    : false;
+  const isKnocked = player ? player.liveState === 1 : false;
+  const isDead = player ? player.liveState === 3 || player.bHasDied : false;
+
   return (
     <div className="h-full w-1/4">
       <AnimatePresence>
@@ -22,7 +29,7 @@ export default function PlayerCard({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: index * 0.5 }}
-          className="relative flex h-full w-full flex-col items-start justify-end bg-gradient-to-t from-black to-transparent p-6"
+          className="relative flex h-full w-full flex-col items-start justify-end bg-gradient-to-t from-black to-transparent p-16"
           style={{ transitionDelay: `${(index + 1) * 150}ms` }}
         >
           {player && (
@@ -35,9 +42,14 @@ export default function PlayerCard({
                   OBSERVED
                 </div>
               )}
-              {!player.isAlive && (
+              {isDead && (
                 <div className="mt-1 inline-block rounded bg-neutral-500 px-2 py-1 text-xs font-bold text-white">
                   ELIMINATED
+                </div>
+              )}
+              {isKnocked && (
+                <div className="mt-1 inline-block rounded bg-orange-500 px-2 py-1 text-xs font-bold text-white">
+                  KNOCKED
                 </div>
               )}
             </div>
@@ -49,7 +61,7 @@ export default function PlayerCard({
           </div>
 
           <div className="z-30 text-[#CFE356]">
-            <p className="text-5xl font-bold">{player?.damageDealt || 0}</p>
+            <p className="text-5xl font-bold">{player?.damage || 0}</p>
             <p className="text-lg">DAMAGE</p>
           </div>
 
@@ -61,8 +73,8 @@ export default function PlayerCard({
           </div>
 
           <div className="z-30 text-[#CFE356]">
-            <p className="text-5xl font-bold">{player?.rank || 0}</p>
-            <p className="text-lg">RANK</p>
+            <p className="text-5xl font-bold">{player?.knockouts || 0}</p>
+            <p className="text-lg">KNOCKS</p>
           </div>
 
           <AnimatePresence>
@@ -74,7 +86,7 @@ export default function PlayerCard({
             >
               {player ? (
                 <div
-                  className={`${!player.isAlive ? "opacity-50 grayscale" : ""} relative flex h-[900px] w-full items-end`}
+                  className={`${isDead ? "opacity-50 grayscale" : ""} relative flex h-[900px] w-full items-end`}
                 >
                   <Image
                     src={`/assets/images/players/${player.uId}.png`}
@@ -96,17 +108,19 @@ export default function PlayerCard({
               <div className="flex items-center gap-2">
                 <div
                   className={`h-3 w-3 rounded-full ${
-                    !player.isAlive
-                      ? "bg-red-500"
-                      : player.health > 75
-                        ? "bg-green-500"
-                        : player.health > 40
-                          ? "bg-yellow-500"
-                          : "bg-red-500"
+                    isDead
+                      ? "bg-gray-500"
+                      : isKnocked
+                        ? "bg-orange-500"
+                        : player.health > 75
+                          ? "bg-green-500"
+                          : player.health > 40
+                            ? "bg-yellow-500"
+                            : "bg-red-500"
                   }`}
                 />
                 <span className="text-sm text-[#CFE356]">
-                  {player.isAlive ? "ALIVE" : "DOWN"}
+                  {isDead ? "DEAD" : isKnocked ? "KNOCKED" : "ALIVE"}
                 </span>
               </div>
             </div>

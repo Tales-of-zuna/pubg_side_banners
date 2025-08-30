@@ -1,3 +1,4 @@
+// components/TeamStats.tsx
 "use client";
 
 import { TeamInfo } from "@/types/game";
@@ -19,6 +20,19 @@ export default function TeamStats({ teamInfo, teamName }: TeamStatsProps) {
     );
   }
 
+  // Calculate placement points based on typical PUBG scoring
+  const getPlacementPoints = (alivePlayers: number) => {
+    // This is a placeholder - you should adjust based on actual game rules
+    if (alivePlayers === 4) return 10;
+    if (alivePlayers === 3) return 6;
+    if (alivePlayers === 2) return 4;
+    if (alivePlayers === 1) return 2;
+    return 0;
+  };
+
+  const placementPoints = getPlacementPoints(teamInfo.liveMemberNum);
+  const totalPoints = placementPoints + teamInfo.killNum; // 1 point per kill typically
+
   return (
     <motion.div
       initial={{ opacity: 0, y: -20 }}
@@ -28,33 +42,34 @@ export default function TeamStats({ teamInfo, teamName }: TeamStatsProps) {
     >
       <div className="mb-6 flex items-center justify-between">
         <h2 className="text-3xl font-bold text-white">{teamInfo.teamName}</h2>
-        <div className="flex items-center gap-2 rounded-full bg-blue-500/20 px-3 py-1">
-          <Hash className="h-4 w-4 text-blue-400" />
-          <span className="font-bold text-blue-400">
-            Team {teamInfo.teamNumber}
-          </span>
-        </div>
+        {teamInfo.isShowLogo && teamInfo.logoPicUrl && (
+          <img
+            src={teamInfo.logoPicUrl}
+            alt={teamInfo.teamName}
+            className="h-12 w-12 rounded-lg object-cover"
+          />
+        )}
       </div>
 
       <div className="grid grid-cols-4 gap-4">
         <div className="rounded-lg bg-gray-800/50 p-4 text-center">
           <Trophy className="mx-auto mb-2 h-8 w-8 text-yellow-500" />
-          <p className="text-sm text-gray-400">Rank</p>
-          <p className="text-3xl font-bold text-white">#{teamInfo.rank}</p>
+          <p className="text-sm text-gray-400">Team ID</p>
+          <p className="text-3xl font-bold text-white">#{teamInfo.teamId}</p>
         </div>
 
         <div className="rounded-lg bg-gray-800/50 p-4 text-center">
           <Users className="mx-auto mb-2 h-8 w-8 text-green-500" />
           <p className="text-sm text-gray-400">Alive</p>
           <p className="text-3xl font-bold text-white">
-            {teamInfo.liveMemberCount}/4
+            {teamInfo.liveMemberNum}/4
           </p>
         </div>
 
         <div className="rounded-lg bg-gray-800/50 p-4 text-center">
           <Target className="mx-auto mb-2 h-8 w-8 text-orange-500" />
           <p className="text-sm text-gray-400">Total Kills</p>
-          <p className="text-3xl font-bold text-white">{teamInfo.totalKills}</p>
+          <p className="text-3xl font-bold text-white">{teamInfo.killNum}</p>
         </div>
 
         <div className="rounded-lg bg-gray-800/50 p-4 text-center">
@@ -62,23 +77,7 @@ export default function TeamStats({ teamInfo, teamName }: TeamStatsProps) {
             <span className="font-bold text-white">PTS</span>
           </div>
           <p className="text-sm text-gray-400">Points</p>
-          <p className="text-3xl font-bold text-white">
-            {teamInfo.rank === 1
-              ? 10
-              : teamInfo.rank === 2
-                ? 6
-                : teamInfo.rank === 3
-                  ? 5
-                  : teamInfo.rank === 4
-                    ? 4
-                    : teamInfo.rank === 5
-                      ? 3
-                      : teamInfo.rank === 6
-                        ? 2
-                        : teamInfo.rank <= 8
-                          ? 1
-                          : 0}
-          </p>
+          <p className="text-3xl font-bold text-white">{totalPoints}</p>
         </div>
       </div>
     </motion.div>

@@ -1,42 +1,66 @@
+// types/game.ts
 export interface Player {
-  playerId: string;
+  uId: number;
   playerName: string;
-  teamId: string;
+  playerOpenId: string;
+  picUrl: string;
+  showPicUrl: boolean;
+  teamId: number;
   teamName: string;
-  health: number;
-  isAlive: boolean;
-  killNum: number;
-  damageDealt: number;
-  rank: number;
-  location?: {
+  character: string;
+  isFiring: boolean;
+  bHasDied: boolean;
+  location: {
     x: number;
     y: number;
     z: number;
   };
-}
-
-export interface ObservedPlayer {
-  playerId: string;
-  playerName: string;
-  teamId: string;
-  teamName: string;
   health: number;
-  armor: number;
-  helmet: number;
-  backpack: number;
+  healthMax: number;
+  liveState: number; // 0 = alive, 1 = knocked, 2 = in vehicle/plane, 3 = dead
+  killNum: number;
+  killNumBeforeDie: number;
+  playerKey: number;
+  gotAirDropNum: number;
+  maxKillDistance: number;
+  damage: number;
+  killNumInVehicle: number;
+  killNumByGrenade: number;
+  AIKillNum: number;
+  BossKillNum: number;
+  rank: number;
+  isOutsideBlueCircle: boolean;
+  inDamage: number;
+  heal: number;
+  headShotNum: number;
+  survivalTime: number;
+  driveDistance: number;
+  marchDistance: number;
+  assists: number;
+  outsideBlueCircleTime: number;
+  knockouts: number;
+  rescueTimes: number;
+  useSmokeGrenadeNum: number;
+  useFragGrenadeNum: number;
+  useBurnGrenadeNum: number;
+  useFlashGrenadeNum: number;
+  PoisonTotalDamage: number;
+  UseSelfRescueTime: number;
+  UseEmergencyCallTime: number;
 }
 
 export interface TeamInfo {
-  teamId: string;
+  teamId: number;
   teamName: string;
-  teamNumber: number;
-  liveMemberCount: number;
-  totalKills: number;
-  rank: number;
+  isShowLogo: boolean;
+  logoPicUrl: string;
+  killNum: number;
+  liveMemberNum: number;
 }
 
 export interface GameData {
-  observedPlayer: ObservedPlayer | null;
+  observedPlayerId: string | null;
+  observedPlayer: Player | null;
   teamMembers: Player[];
   teamInfo: TeamInfo | null;
   allPlayers: Player[];
