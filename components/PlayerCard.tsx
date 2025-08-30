@@ -77,9 +77,7 @@ export default function PlayerCard({
                   className={`${!player.isAlive ? "opacity-50 grayscale" : ""} relative flex h-[900px] w-full items-end`}
                 >
                   <Image
-                    src={
-                      "https://assets.blast.tv/images/players/30b9717c-3717-4e9d-9d79-f2152da6eec4"
-                    }
+                    src={`/assets/images/players/${player.uId}.png`}
                     alt=""
                     className="h-[900px] object-cover object-top"
                   />
