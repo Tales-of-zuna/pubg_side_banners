@@ -20,7 +20,7 @@ export default function PlayerCard({
   const isDead = player ? player.liveState === 5 || player.bHasDied : false;
 
   return (
-    <div className="h-full w-1/4">
+    <div className={`h-full w-1/4 ${index == 0 || index == 3 ? "py-32" : ""}`}>
       <AnimatePresence>
         <motion.div className="relative flex h-full w-full flex-col items-start justify-end gap-8 bg-gradient-to-t from-black to-transparent p-16">
           {player && (
@@ -75,6 +75,7 @@ export default function PlayerCard({
                   className={`${isDead ? "opacity-50 grayscale" : ""} relative flex h-[900px] w-full items-end`}
                 >
                   <Image
+                    // src={`/assets/images/players/514643497.png`}
                     src={`/assets/images/players/${player.uId}.png`}
                     alt=""
                     className="h-[900px] object-cover object-top"

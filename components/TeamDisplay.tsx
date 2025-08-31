@@ -2,7 +2,6 @@
 "use client";
 
 import { GameData } from "@/types/game";
-import { AlertCircle } from "lucide-react";
 import PlayerCard from "./PlayerCard";
 
 interface TeamDisplayProps {
@@ -15,7 +14,7 @@ export default function TeamDisplay({ gameData }: TeamDisplayProps) {
   if (!observedPlayer) {
     return (
       <div className="flex h-full items-center justify-center">
-        <div className="text-center">
+        {/* <div className="text-center">
           <AlertCircle className="mx-auto mb-4 h-16 w-16 text-gray-500" />
           <h2 className="mb-2 text-2xl font-bold text-gray-400">
             No Team Observed
@@ -23,7 +22,7 @@ export default function TeamDisplay({ gameData }: TeamDisplayProps) {
           <p className="text-gray-500">
             Waiting for observer to select a player...
           </p>
-        </div>
+        </div> */}
       </div>
     );
   }
